@@ -3,6 +3,13 @@ class_name AdvancedInterlacingEffect extends CompositorEffect
 
 const SHADER_PATH: String = "res://addons/advanced_interlacing_effect.glsl"
 
+
+## Make Frame Update Frequency update automatically based on the Target Update FPS.
+## WARNING: If the framerate of your project is unstable this will make the effect look significantly worse.
+@export var adjust_update_frequency_automatically: bool = false
+## If Adjust Update Frequency Automatically is true, Frame Update Frequency will be automatically set based on 
+## how often you want the interlace buffer to update every second.
+@export var target_update_fps: int = 60
 ## This is how often the past buffer should update. 0 is every frame(1 frame behind), 1 is every other frame and so forth.
 ## This is useful for making the effect more pronounced at higher refresh rates.
 ## Values set too high can get a jittery look so be careful using this.
@@ -117,6 +124,10 @@ func _render_callback(p_effect_callback_type: EffectCallbackType, p_render_data:
 				0
 			]).to_byte_array()
 			push_constant.append_array(pc2)
+			
+			if adjust_update_frequency_automatically: 
+				frame_update_frequency = ceili(Engine.get_frames_per_second() / target_update_fps) - 1
+			print(frame_update_frequency)
 			
 			if _update_timer <= 0:
 				_update_timer = frame_update_frequency + 1
