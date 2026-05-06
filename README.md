@@ -3,6 +3,8 @@
 
   Because this is a Compositor Effect it will only work in the Forward+ and Mobile renderers.
 
+https://github.com/user-attachments/assets/051f7489-9fcf-4103-a844-88e446c6e69d
+
 ## Known "issues":
   Due to how this effect works this effect doesn't work well with high refresh rates. The effect uses the previous frame to create the interlacing, meaning high refresh rates makes it super hard to see. 
 
