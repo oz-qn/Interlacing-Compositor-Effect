@@ -12,9 +12,9 @@ layout(rgba16f, set = 0, binding = 1) uniform image2D accumulation_buffer;
 layout(push_constant, std430) uniform Params {
 	vec2 raster_size;
 	float angle;
-	float mem_buffer;
 	int line_width;
 	int v_offset;
+	int should_write;
 };
 
 const float PI = 3.14;
@@ -62,7 +62,9 @@ void main() {
 
 	vec4 final_color = mix(frame_color, line_color, sdf);
 
-	imageStore(accumulation_buffer, uv, frame_color);
+	if (should_write <= 0) {
+		imageStore(accumulation_buffer, uv, frame_color);
+	}
 
 	imageStore(screen_buffer, uv, final_color);
 }

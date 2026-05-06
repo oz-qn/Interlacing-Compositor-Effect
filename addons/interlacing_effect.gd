@@ -3,10 +3,15 @@ class_name InterlacingEffect extends CompositorEffect
 
 const SHADER_PATH: String = "res://addons/interlacing_effect.glsl"
 
+## This is how often the past buffer should update. 0 is every frame(1 frame behind), 1 is every other frame and so forth.
+## This is useful for making the effect more pronounced at higher refresh rates.
+## Values set too high can get a jittery look so be careful using this.
+@export var frame_update_frequency: int = 0
 @export_range(1, 100, 1.0) var line_width: int = 5
 @export_range(0, 100, 1.0) var line_offset: int = 0
 @export var scrolling_lines: bool = false
 
+var _update_timer: int = 0
 var rd: RenderingDevice
 var shader: RID
 var pipeline: RID
@@ -97,9 +102,17 @@ func _render_callback(p_effect_callback_type: EffectCallbackType, p_render_data:
 			]).to_byte_array()
 			var pc2: PackedByteArray = PackedInt32Array([
 				line_width,
-				line_offset
+				line_offset, 
+				_update_timer,
+				0,
+				0,
+				0
 			]).to_byte_array()
 			push_constant.append_array(pc2)
+			
+			if _update_timer <= 0:
+				_update_timer = frame_update_frequency + 1
+			_update_timer -= 1
 			
 			if scrolling_lines:
 				line_offset = (line_offset + line_width) % 100
@@ -129,7 +142,7 @@ func _render_callback(p_effect_callback_type: EffectCallbackType, p_render_data:
 				var compute_list := rd.compute_list_begin()
 				rd.compute_list_bind_compute_pipeline(compute_list, pipeline)
 				rd.compute_list_bind_uniform_set(compute_list, uniform_set, 0)
-				rd.compute_list_set_push_constant(compute_list, push_constant, 16)
+				rd.compute_list_set_push_constant(compute_list, push_constant, push_constant.size())
 				rd.compute_list_dispatch(compute_list, x_groups, y_groups, z_groups)
 				rd.compute_list_end()
 #endregion

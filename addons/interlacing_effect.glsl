@@ -13,6 +13,7 @@ layout(push_constant, std430) uniform Params {
 	vec2 raster_size;
 	int line_width;
 	int v_offset;
+	int should_write;
 };
 
 // The code we want to execute in each invocation
@@ -34,7 +35,9 @@ void main() {
 
 	vec4 final_color = mix(frame_color, line_color, delta);
 
-	imageStore(accumulation_buffer, uv, frame_color);
+	if (should_write <= 0) {
+		imageStore(accumulation_buffer, uv, frame_color);
+	}
 
 	imageStore(screen_buffer, uv, final_color);
 }
