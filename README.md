@@ -3,6 +3,8 @@
 
   Because this is a Compositor Effect it will only work in the Forward+ and Mobile renderers.
 
+  There are 2 main versions. The basic InterlaceEffect which just features horizontal interlacing as you'd see. This one has less features but should be a lil bit more performant (and also a bit better looking I think? maybe I'm tweaking). Then there is the AdvancedInterlaceEffect. This one adds features like being able to decide the angle at which things are interlaced, being able to automatically rotate the interlace effect and some other extras! I recommend the basic one for most use cases.
+
 https://github.com/user-attachments/assets/051f7489-9fcf-4103-a844-88e446c6e69d
 
 ## Known "issues":
