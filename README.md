@@ -6,7 +6,7 @@
 https://github.com/user-attachments/assets/051f7489-9fcf-4103-a844-88e446c6e69d
 
 ## Known "issues":
-  EDIT: A new value has been added to the shaders that lets you "delay" the updating of the buffer. This means you can manually compensate for higher refresh rates! It's up to you to automate that though, maybe I'll implement that in the future.
+  EDIT: A new value has been added to the shaders that lets you "delay" the updating of the buffer. This means you can manually compensate for higher refresh rates! There is also an automatic solution that will adjust the update frequency based on a target framerate you provide. I recommend 60!
 
   ~~Due to how this effect works this effect doesn't work well with high refresh rates. The effect uses the previous frame to create the interlacing, meaning high refresh rates makes it super hard to see.~~
 
