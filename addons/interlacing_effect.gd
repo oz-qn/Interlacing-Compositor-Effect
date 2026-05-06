@@ -118,7 +118,6 @@ func _render_callback(p_effect_callback_type: EffectCallbackType, p_render_data:
 			
 			if adjust_update_frequency_automatically: 
 				frame_update_frequency = ceili(Engine.get_frames_per_second() / target_update_fps) - 1
-			print(frame_update_frequency)
 			
 			if _update_timer <= 0:
 				_update_timer = frame_update_frequency + 1
